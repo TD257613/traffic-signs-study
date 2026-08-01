@@ -1,7 +1,7 @@
-const CACHE = 'traffic-signs-full-v2';
+const CACHE = 'traffic-signs-full-v3';
 const CORE = [
   './', './index.html', './styles.css', './app.js', './manifest.webmanifest',
-  './data/signs.json', './data/catalog-report.json', './icons/icon-192.png', './icons/icon-512.png'
+  './data/signs-data.js', './data/signs.json', './data/catalog-report.json', './icons/icon-192.png', './icons/icon-512.png'
 ];
 const ALL_ASSETS = [
   "./",
@@ -9,6 +9,7 @@ const ALL_ASSETS = [
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
+  "./data/signs-data.js",
   "./data/signs.json",
   "./data/catalog-report.json",
   "./icons/icon-192.png",

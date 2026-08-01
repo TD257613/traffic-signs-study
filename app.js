@@ -40,12 +40,18 @@ function signVisual(sign, lazy = false) {
 
 async function init() {
   try {
-    const response = await fetch('./data/signs.json', { cache: 'no-cache' });
-    if (!response.ok) throw new Error('לא ניתן לטעון את המאגר');
-    signs = await response.json();
+    // The embedded database supports direct opening from the computer (file://)
+    // and avoids browser restrictions on fetching local JSON files.
+    if (Array.isArray(window.TRAFFIC_SIGNS_DATABASE) && window.TRAFFIC_SIGNS_DATABASE.length) {
+      signs = window.TRAFFIC_SIGNS_DATABASE;
+    } else {
+      const response = await fetch('./data/signs.json', { cache: 'no-cache' });
+      if (!response.ok) throw new Error('לא ניתן לטעון את המאגר');
+      signs = await response.json();
+    }
     if (!Array.isArray(signs) || !signs.length) throw new Error('המאגר ריק');
   } catch (error) {
-    document.body.innerHTML = `<main><section class="card"><h2>שגיאת טעינה</h2><p>${escapeHtml(error.message)}. יש להפעיל את המערכת דרך GitHub Pages או שרת מקומי.</p></section></main>`;
+    document.body.innerHTML = `<main><section class="card"><h2>שגיאת טעינה</h2><p>${escapeHtml(error.message)}.</p><p>ודא שכל קובצי המערכת חולצו מאותו קובץ ZIP ושלא הועבר רק הקובץ index.html.</p></section></main>`;
     return;
   }
 
