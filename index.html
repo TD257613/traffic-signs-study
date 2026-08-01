@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta name="description" content="מערכת אישית וחינמית ללימוד תמרורי ישראל, מבחנים וכרטיסיות זיכרון" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>לומדים תמרורים</title>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">מערכת אישית וחינמית</span>
+      <h1>לומדים תמרורים</h1>
+      <p>מאגר מורחב, מבחנים וחזרות חכמות</p>
+    </div>
+    <button id="installBtn" class="secondary hidden">התקנה במכשיר</button>
+  </header>
+
+  <nav class="tabs" aria-label="ניווט ראשי">
+    <button class="tab active" data-view="home">בית</button>
+    <button class="tab" data-view="learn">כרטיסיות</button>
+    <button class="tab" data-view="quiz">מבחנים</button>
+    <button class="tab" data-view="catalog">מאגר</button>
+    <button class="tab" data-view="stats">התקדמות</button>
+  </nav>
+
+  <main>
+    <section id="home" class="view active">
+      <article class="hero card">
+        <div>
+          <span class="eyebrow">לימוד בקצב שלך</span>
+          <h2>למד, תרגל וחזור על התמרורים שקשה לך לזכור</h2>
+          <p>המערכת שומרת את ההתקדמות במכשיר שלך בלבד. לאחר הטעינה הראשונה היא יכולה לפעול גם בלי אינטרנט.</p>
+          <div class="actions">
+            <button class="primary" data-go="learn">המשך לכרטיסיות</button>
+            <button class="secondary" data-go="quiz">התחל מבחן</button>
+          </div>
+        </div>
+        <div class="hero-sign" aria-hidden="true">🚦</div>
+      </article>
+
+      <div class="metrics">
+        <article class="metric card"><span>תמרורים במאגר</span><strong id="signTotal">0</strong></article>
+        <article class="metric card"><span>נלמדו</span><strong id="learnedTotal">0</strong></article>
+        <article class="metric card"><span>ממתינים לחזרה</span><strong id="dueTotal">0</strong></article>
+        <article class="metric card"><span>רצף לימוד</span><strong><span id="streakTotal">0</span><small> ימים</small></strong></article>
+      </div>
+
+      <article class="card notice">
+        <h3>על המאגר</h3>
+        <p>המאגר כולל תמרורים, רמזורים, סימוני דרך, תמרורים באתרי עבודה וסמלים. תמרורים שנוספו לאחר גיליון המקור הישן מסומנים באפליקציה כ״איור לימודי״. לצורך החלטה משפטית או מקצועית יש לבדוק תמיד את לוח התמרורים הרשמי והדין העדכני.</p>
+      </article>
+    </section>
+
+    <section id="learn" class="view">
+      <div class="section-head wrap">
+        <div><span class="eyebrow">חזרה במרווחים</span><h2>כרטיסיות זיכרון</h2></div>
+        <div class="filters compact-filters">
+          <select id="learnCategory" aria-label="קבוצת תמרורים"><option value="all">כל הקבוצות</option></select>
+          <button id="shuffleLearn" class="secondary">ערבב</button>
+        </div>
+      </div>
+      <article class="flashcard card">
+        <div id="flashVisual" class="sign-stage"></div>
+        <span id="flashCategory" class="badge secondary-badge"></span>
+        <h2 id="flashTitle"></h2>
+        <button id="showAnswer" class="primary">הצג תשובה</button>
+        <div id="flashAnswer" class="hidden">
+          <p id="flashMeaning" class="meaning"></p>
+          <div id="flashAction" class="action-box"></div>
+          <div class="rating-grid">
+            <button class="danger-soft" data-rating="again">לא זכרתי</button>
+            <button class="warning-soft" data-rating="hard">היה קשה</button>
+            <button class="success-soft" data-rating="good">זכרתי</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="quiz" class="view">
+      <div class="section-head wrap">
+        <div><span class="eyebrow">בדיקת ידע</span><h2>מבחנים</h2></div>
+      </div>
+      <div id="quizStart" class="card quiz-settings">
+        <label>מספר שאלות
+          <select id="quizLength">
+            <option value="5">5 שאלות</option>
+            <option value="10" selected>10 שאלות</option>
+            <option value="20">20 שאלות</option>
+            <option value="30">30 שאלות</option>
+          </select>
+        </label>
+        <label>קבוצה
+          <select id="quizCategory"><option value="all">כל הקבוצות</option></select>
+        </label>
+        <label>סוג מבחן
+          <select id="quizMode">
+            <option value="all">אקראי</option>
+            <option value="weak">תמרורים חלשים</option>
+            <option value="wrong">טעויות קודמות</option>
+            <option value="favorites">מועדפים</option>
+          </select>
+        </label>
+        <p id="quizAvailability" class="muted"></p>
+        <button id="startQuiz" class="primary">התחל מבחן</button>
+      </div>
+      <div id="quizBox" class="card hidden">
+        <div class="progress"><div id="quizProgress"></div></div>
+        <p id="quizCounter" class="muted"></p>
+        <div id="quizVisual" class="sign-stage compact"></div>
+        <h3>מה משמעות התמרור?</h3>
+        <div id="answers" class="answers"></div>
+        <div id="feedback" class="feedback hidden"></div>
+        <button id="nextQuestion" class="primary hidden">לשאלה הבאה</button>
+      </div>
+      <div id="quizResult" class="card centered hidden"></div>
+    </section>
+
+    <section id="catalog" class="view">
+      <div class="section-head wrap">
+        <div><span class="eyebrow">בסיס נתונים</span><h2>מאגר התמרורים</h2><p id="catalogCount" class="muted"></p></div>
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="מספר, שם, משמעות או פעולה" />
+          <select id="categoryFilter"><option value="all">כל הקבוצות</option></select>
+          <select id="artworkFilter">
+            <option value="all">כל האיורים</option>
+            <option value="source-sheet">איורי גיליון המקור</option>
+            <option value="schematic">איורים לימודיים</option>
+          </select>
+        </div>
+      </div>
+      <div id="catalogGrid" class="catalog-grid"></div>
+    </section>
+
+    <section id="stats" class="view">
+      <div class="section-head"><div><span class="eyebrow">נתונים אישיים</span><h2>ההתקדמות שלי</h2></div></div>
+      <div class="metrics">
+        <article class="metric card"><span>תשובות נכונות</span><strong id="correctTotal">0</strong></article>
+        <article class="metric card"><span>טעויות</span><strong id="wrongTotal">0</strong></article>
+        <article class="metric card"><span>מבחנים</span><strong id="testsTotal">0</strong></article>
+        <article class="metric card"><span>מועדפים</span><strong id="favoritesTotal">0</strong></article>
+      </div>
+      <section class="card">
+        <h3>תמרורים שדורשים חזרה</h3>
+        <div id="weakSigns" class="weak-list"></div>
+      </section>
+      <section class="card settings-card">
+        <h3>גיבוי ושחזור</h3>
+        <p class="muted">מומלץ לייצא גיבוי לפני מחיקת נתוני הדפדפן או מעבר למכשיר אחר.</p>
+        <div class="actions">
+          <button id="exportData" class="secondary">ייצוא גיבוי</button>
+          <label class="secondary file-label">ייבוא גיבוי<input id="importData" type="file" accept="application/json" hidden /></label>
+          <button id="resetData" class="danger-soft">איפוס נתונים</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="signDialog">
+    <button id="closeDialog" class="dialog-close" aria-label="סגירה">×</button>
+    <div id="dialogVisual" class="sign-stage compact"></div>
+    <div class="dialog-badges"><span id="dialogNumber" class="badge"></span><span id="dialogArtwork" class="badge secondary-badge"></span></div>
+    <h2 id="dialogTitle"></h2>
+    <p id="dialogMeaning" class="meaning"></p>
+    <div id="dialogAction" class="action-box"></div>
+    <p id="dialogValidity" class="muted"></p>
+    <p id="dialogSource" class="source-note"></p>
+  </dialog>
+
+  <footer>לשימוש לימודי אישי בלבד. אין לראות במערכת תחליף למקור רשמי.</footer>
+  <script src="./app.js" defer></script>
+</body>
+</html>
